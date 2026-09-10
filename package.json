@@ -1,0 +1,10 @@
+{
+  "name": "o-craque-da-bola-sistema-sss",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Simulador de carreira de futebol com sistema SSS de roubo de talentos.",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "serve": "python3 -m http.server 8080"
+  }
+}

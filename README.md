@@ -1,55 +1,82 @@
 # ⚽ O Craque da Bola — Sistema SSS
 
-Simulador de carreira de futebol em estilo **power fantasy / manhwa**, no qual o protagonista começa com atributos modestos e desperta um sistema capaz de roubar talentos.
+Simulador de carreira em estilo RPG/manhwa, agora com uma linha do tempo histórica que começa em **1996** e avança temporada por temporada.
 
-## O que já está jogável
+## Linha do tempo histórica
 
-- Carreira em 5 estágios: **Sub-15 → Sub-17 → Estreante Profissional → Europa → Seleção Principal**.
-- Loop de temporada de **10 semanas**.
-- **3 sessões de treino por semana**, com energia e fadiga.
-- Treinos **Leve / Pesado / Espartano**, com probabilidades e risco de lesão.
-- Nenhum treino passa do **teto potencial** do atributo.
-- Partidas semanais com três abordagens: **seguro, equilibrado e protagonista**.
-- Pontos de Cópia como recurso limitado.
-- Duelos para roubar **3 fragmentos** e completar talentos SSS.
-- Talento completo amplia o teto do atributo para **99** e libera uma passiva permanente.
-- Eventos de reação quando o overall sobe de forma anormalmente rápida.
-- Promoções, recordes, títulos e histórico de carreira.
-- Mercado de transferências com janelas, propostas, salários, contratos, lealdade e perfil de empresário.
-- Envelhecimento: depois dos 31 anos, atributos físicos sofrem queda por temporada.
-- Salvamento automático com `localStorage`.
-- Dois visuais: **Dashboard de Gestão** e **HUD de Webtoon/Manhwa**.
-- Catálogo pesquisável de clubes, com **ABC Futebol Clube (Natal/RN)** explicitamente priorizado.
-- Layout responsivo para desktop e celular.
+- Ponto inicial: **1996** (30 anos antes de 2026).
+- Janela jogável: **1996 → 2026**.
+- Banco compacto com **32 craques históricos** e **166 períodos de clube**.
+- O arquivo `data/craques-mini.json` guarda nacionalidade, posição, ano de nascimento, período e clube.
+- A tela **Mundo** só apresenta o craque quando existe vínculo profissional naquele ano.
+- Empréstimos são marcados separadamente para não confundir com o clube principal.
 
-## Estrutura
+## Criação do jogador
+
+Antes do despertar do Sistema, o jogador escolhe:
+
+- nome;
+- nacionalidade entre **44 seleções**;
+- posição;
+- dificuldade Normal ou SSS.
+
+A nacionalidade acompanha a carreira internacional e define a seleção que pode convocar o jogador.
+
+## Sistema SSS
+
+- Pontos de Cópia finitos.
+- Duelos contra craques ativos da época.
+- Talentos em fragmentos `1/3 → 2/3 → 3/3`.
+- Talento completo aumenta o teto do atributo relacionado para **99**.
+- O alvo do duelo muda conforme o ano da carreira.
+
+## Desenvolvimento
+
+- Exatamente **3 sessões de treino por semana**.
+- **Leve:** +1, 100% de sucesso, sem lesão.
+- **Pesado:** +3, 50% de sucesso, 15% de fadiga física temporária.
+- **Espartano:** +6, 20% de sucesso, 25% de lesão grave por 3–10 partidas.
+- Nenhum treino ultrapassa o teto potencial.
+- Depois dos 31 anos, atributos físicos sofrem queda por temporada.
+
+## Carreira e mundo
+
+- Partidas semanais, forma, moral, energia e fadiga.
+- Tática e desempenho influenciam os resultados.
+- Mercado de transferências, contratos e empresário.
+- Convocações para a seleção e Copas do Mundo.
+- Promoções de categoria e aposentadoria.
+- Catálogo de clubes com busca e filtros; **ABC Futebol Clube (Natal/RN)** está presente.
+- Salvamento local com validação de dados.
+
+## Arquitetura
 
 ```text
 index.html
-README.md
-package.json
+styles-v6.css
+game-v6.js
+data/
+  clubs.generated.json
+  craques-mini.json
+scripts/
+  validate-game.mjs
+  test-history.mjs
 ```
 
-O MVP é deliberadamente autocontido em `index.html`, permitindo publicar como site estático sem backend obrigatório.
-
-## Rodar localmente
+## Executar
 
 ```bash
-python3 -m http.server 8080
+npm start
 ```
 
 Abra `http://localhost:8080`.
 
-Também é possível executar `npm start` quando Node/npm estiver disponível.
+Validação automatizada:
 
-## Regras de design do jogo
+```bash
+npm test
+```
 
-O objetivo é evitar a sensação de números infinitos e manter decisões com custo. Por isso, treino é limitado por semana; energia, fadiga, forma e lesões alteram o ritmo; e os Pontos de Cópia são um recurso escasso.
+## Aviso
 
-O sistema foi construído para aceitar futuras expansões como banco de dados, autenticação, elenco completo, competições, calendário real, IA narrativa e motor de partidas mais profundo.
-
-## Nomes e identidade
-
-Nomes de clubes e jogadores reais são usados apenas para referência narrativa/identificação. O projeto não utiliza logos oficiais, fotografias ou uniformes oficiais.
-
-> **Aviso:** Sem afiliação com nenhuma liga, federação, clube ou jogador. Nomes usados apenas para identificação e homenagem.
+Sem afiliação com nenhuma liga, federação, clube ou jogador. Nomes são usados apenas para identificação e homenagem. A cronologia do jogo é uma camada histórica simplificada por ano.

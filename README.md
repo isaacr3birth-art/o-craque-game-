@@ -1,34 +1,38 @@
-# ⚽ O Craque da Bola — Sistema SSS v8
+# ⚽ O Craque da Bola — Sistema SSS v8.1
 
 Simulador de carreira em estilo RPG/manhwa em que o protagonista começa em **1996**, escolhe sua nacionalidade e cresce enquanto enfrenta craques históricos e rouba fragmentos de talentos.
 
-## O que a v8 adiciona
+## O que existe
 
-- Linha do tempo jogável **1996 → 2026**.
-- Escolha de nacionalidade entre **44 seleções** no despertar.
+- Linha do tempo **1996 → 2026**.
+- Escolha de nacionalidade entre **44 seleções**.
 - Base histórica com **32 craques e 166 períodos de clube**.
-- O Mundo só mostra um craque quando ele possui vínculo profissional no ano consultado.
-- Treino com limite rígido de **3 sessões por semana**.
+- Consulta histórica por ano com distinção de empréstimos.
+- Treino limitado a **3 sessões por semana** e descanso limitado.
 - Leve: +1, 100% sucesso, sem lesão.
-- Pesado: +3, 50% sucesso, 15% chance de fadiga física temporária.
-- Espartano: +6, 20% sucesso, 25% chance de lesão grave por 3–10 partidas.
-- Teto de potencial impede evolução infinita.
-- Queda física de 2–4 pontos por temporada a partir dos 31 anos.
-- Uma partida por semana, com tática Seguro / Equilibrado / Protagonista.
+- Pesado: +3, 50% sucesso, 15% fadiga física temporária.
+- Espartano: +6, 20% sucesso, 25% lesão grave por 3–10 partidas.
+- Teto de potencial e queda física após os 31.
+- Uma partida por semana com escolhas de abordagem.
 - Moral, forma, energia, fadiga, confiança do treinador e química.
-- Duelos SSS com pontos de cópia finitos e fragmentos 1/3 → 2/3 → 3/3.
-- Talento completo amplia o teto do atributo para 99 e sobe o nível do Sistema.
-- Rivalidades persistentes com relações e desafios.
-- Convocação internacional ligada à nacionalidade escolhida.
-- Copa do Mundo com partidas interativas em 1998, 2002, 2006, 2010, 2014, 2018, 2022 e 2026.
-- Ranking das principais seleções.
-- Mercado de transferências com propostas, salários, duração e empresário.
-- Empresário Conservador/Agressivo.
-- Patrocínios liberados conforme popularidade.
-- Histórico da carreira e Hall da Fama.
-- New Game+ carregando talentos completos.
+- Duelos SSS e fragmentos `1/3 → 2/3 → 3/3`.
+- Talentos completos ampliam o teto do atributo relacionado para 99.
+- Rivalidades persistentes, desafios e conquistas.
+- Convocação internacional, Copa do Mundo e ranking de seleções.
+- Mercado de transferências e empresário Conservador/Agressivo.
+- Patrocínios e Hall da Fama.
+- New Game+ com talentos completos.
 - Catálogo de clubes com busca/filtro; **ABC Futebol Clube (Natal/RN)** está incluído.
-- Save local com normalização e limites contra dados inválidos.
+
+## Correções de integridade da v8.1
+
+- Dificuldade fica bloqueada após o início da carreira para impedir exploração de Pontos de Cópia.
+- Convocação não deve contar como partida internacional; `national.games` e `national.caps` são separados.
+- Patrocínio usa `finance.wealth`, sem inflar `career.value`.
+- O mesmo patrocinador não pode ser conquistado duas vezes.
+- Desafios de rival registram corretamente vitória/derrota do rival.
+- Dados de save são normalizados e limitados antes de serem aceitos.
+- O módulo extra agora funciona como bootstrap para separar Copa/rivalidades/patrocínios do guard de integridade.
 
 ## Arquitetura
 
@@ -36,16 +40,17 @@ Simulador de carreira em estilo RPG/manhwa em que o protagonista começa em **19
 index.html
 styles-v6.css
 styles-v8.css
-game-v6.js       # versão anterior / histórico
-game-v7.js       # versão anterior / histórico
-game-v8.js       # engine principal atual
-game-v8-extra.js # Copa, rivalidades, ranking e patrocínios
+game-v8.js               # engine principal
+game-v8-extra.js         # bootstrap
+game-v8-extra-core.js    # Copa, ranking, rivais e patrocínios
+game-v8-integrity.js     # proteção de estado/exploits
 data/
   clubs.generated.json
   craques-mini.json
 scripts/
   validate-game.mjs
   test-history.mjs
+  test-integrity.mjs
 .github/workflows/test.yml
 ```
 
@@ -63,9 +68,9 @@ Validação:
 npm test
 ```
 
-## Regras importantes
+## Próxima grande camada
 
-O jogo evita grind infinito: treinos são limitados por semana, descanso também possui limite semanal e uma partida só pode ser jogada uma vez por semana. A progressão respeita o teto potencial e a condição física.
+O próximo salto recomendado é substituir o cálculo simplificado de partida por um motor contextual de futebol: escalação, formação, elenco, adversário, posição, atributos relevantes, mando de campo, eventos de jogo e competições completas. Depois disso, ampliar o arquivo histórico de craques e transformar cada clube em uma entidade jogável.
 
 ## Aviso
 

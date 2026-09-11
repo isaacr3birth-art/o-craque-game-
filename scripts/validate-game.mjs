@@ -2,12 +2,12 @@ import fs from 'node:fs';
 
 const root = new URL('../', import.meta.url).pathname;
 const html = fs.readFileSync(`${root}index.html`, 'utf8');
-const js = fs.readFileSync(`${root}game-v7.js`, 'utf8');
+const js = fs.readFileSync(`${root}game-v8.js`, 'utf8');
 const data = JSON.parse(fs.readFileSync(`${root}data/craques-mini.json`, 'utf8'));
 
 const assert = (ok, message) => { if (!ok) throw new Error(message); };
-assert(html.includes('game-v7.js'), 'index.html deve carregar game-v7.js');
-assert(html.includes('styles-v6.css'), 'index.html deve carregar styles-v6.css');
+assert(html.includes('game-v8.js'), 'index.html deve carregar game-v8.js');
+assert(html.includes('styles-v8.css'), 'index.html deve carregar styles-v8.css');
 assert(html.includes('startNationality'), 'seletor de nacionalidade ausente');
 assert(html.includes('historyYear'), 'seletor histórico ausente');
 assert(html.includes('generateOffers'), 'ação de mercado ausente');
@@ -27,20 +27,22 @@ for (const p of data.players) {
 }
 
 for (const needle of [
-  "const KEY='craque-sss-v7'",
+  "const SAVE_KEY='craque-sss-v8'",
   'START=1996',
   'MAX_TRAIN=3',
   'localStorage',
-  'worldCupCheck',
+  'cupCheck',
   'injuredMatches',
   'temporaryPhysicalPenalty',
-  'nationalCheck',
+  'callSelection',
   'generateOffers',
   'startCareer',
   'newGame',
-  'rejectOffer',
   'newGamePlus',
-  'bind()'
+  'setAgent',
+  'rivals',
+  'rest()',
+  'match(mode)'
 ]) assert(js.includes(needle), `regra ausente: ${needle}`);
 
 console.log(`OK: ${data.players.length} craques, ${data.players.reduce((n,p)=>n+p[4].length,0)} períodos de clubes, ${data.end-data.start+1} anos.`);

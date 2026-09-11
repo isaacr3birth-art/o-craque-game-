@@ -1,66 +1,52 @@
-# ⚽ O Craque da Bola — Sistema SSS
+# ⚽ O Craque da Bola — Sistema SSS v8
 
-Simulador de carreira em estilo RPG/manhwa, agora com uma linha do tempo histórica que começa em **1996** e avança temporada por temporada.
+Simulador de carreira em estilo RPG/manhwa em que o protagonista começa em **1996**, escolhe sua nacionalidade e cresce enquanto enfrenta craques históricos e rouba fragmentos de talentos.
 
-## Linha do tempo histórica
+## O que a v8 adiciona
 
-- Ponto inicial: **1996** (30 anos antes de 2026).
-- Janela jogável: **1996 → 2026**.
-- Banco compacto com **32 craques históricos** e **166 períodos de clube**.
-- O arquivo `data/craques-mini.json` guarda nacionalidade, posição, ano de nascimento, período e clube.
-- A tela **Mundo** só apresenta o craque quando existe vínculo profissional naquele ano.
-- Empréstimos são marcados separadamente para não confundir com o clube principal.
-
-## Criação do jogador
-
-Antes do despertar do Sistema, o jogador escolhe:
-
-- nome;
-- nacionalidade entre **44 seleções**;
-- posição;
-- dificuldade Normal ou SSS.
-
-A nacionalidade acompanha a carreira internacional e define a seleção que pode convocar o jogador.
-
-## Sistema SSS
-
-- Pontos de Cópia finitos.
-- Duelos contra craques ativos da época.
-- Talentos em fragmentos `1/3 → 2/3 → 3/3`.
-- Talento completo aumenta o teto do atributo relacionado para **99**.
-- O alvo do duelo muda conforme o ano da carreira.
-
-## Desenvolvimento
-
-- Exatamente **3 sessões de treino por semana**.
-- **Leve:** +1, 100% de sucesso, sem lesão.
-- **Pesado:** +3, 50% de sucesso, 15% de fadiga física temporária.
-- **Espartano:** +6, 20% de sucesso, 25% de lesão grave por 3–10 partidas.
-- Nenhum treino ultrapassa o teto potencial.
-- Depois dos 31 anos, atributos físicos sofrem queda por temporada.
-
-## Carreira e mundo
-
-- Partidas semanais, forma, moral, energia e fadiga.
-- Tática e desempenho influenciam os resultados.
-- Mercado de transferências, contratos e empresário.
-- Convocações para a seleção e Copas do Mundo.
-- Promoções de categoria e aposentadoria.
-- Catálogo de clubes com busca e filtros; **ABC Futebol Clube (Natal/RN)** está presente.
-- Salvamento local com validação de dados.
+- Linha do tempo jogável **1996 → 2026**.
+- Escolha de nacionalidade entre **44 seleções** no despertar.
+- Base histórica com **32 craques e 166 períodos de clube**.
+- O Mundo só mostra um craque quando ele possui vínculo profissional no ano consultado.
+- Treino com limite rígido de **3 sessões por semana**.
+- Leve: +1, 100% sucesso, sem lesão.
+- Pesado: +3, 50% sucesso, 15% chance de fadiga física temporária.
+- Espartano: +6, 20% sucesso, 25% chance de lesão grave por 3–10 partidas.
+- Teto de potencial impede evolução infinita.
+- Queda física de 2–4 pontos por temporada a partir dos 31 anos.
+- Uma partida por semana, com tática Seguro / Equilibrado / Protagonista.
+- Moral, forma, energia, fadiga, confiança do treinador e química.
+- Duelos SSS com pontos de cópia finitos e fragmentos 1/3 → 2/3 → 3/3.
+- Talento completo amplia o teto do atributo para 99 e sobe o nível do Sistema.
+- Rivalidades persistentes com relações e desafios.
+- Convocação internacional ligada à nacionalidade escolhida.
+- Copa do Mundo com partidas interativas em 1998, 2002, 2006, 2010, 2014, 2018, 2022 e 2026.
+- Ranking das principais seleções.
+- Mercado de transferências com propostas, salários, duração e empresário.
+- Empresário Conservador/Agressivo.
+- Patrocínios liberados conforme popularidade.
+- Histórico da carreira e Hall da Fama.
+- New Game+ carregando talentos completos.
+- Catálogo de clubes com busca/filtro; **ABC Futebol Clube (Natal/RN)** está incluído.
+- Save local com normalização e limites contra dados inválidos.
 
 ## Arquitetura
 
 ```text
 index.html
 styles-v6.css
-game-v6.js
+styles-v8.css
+game-v6.js       # versão anterior / histórico
+game-v7.js       # versão anterior / histórico
+game-v8.js       # engine principal atual
+game-v8-extra.js # Copa, rivalidades, ranking e patrocínios
 data/
   clubs.generated.json
   craques-mini.json
 scripts/
   validate-game.mjs
   test-history.mjs
+.github/workflows/test.yml
 ```
 
 ## Executar
@@ -71,12 +57,16 @@ npm start
 
 Abra `http://localhost:8080`.
 
-Validação automatizada:
+Validação:
 
 ```bash
 npm test
 ```
 
+## Regras importantes
+
+O jogo evita grind infinito: treinos são limitados por semana, descanso também possui limite semanal e uma partida só pode ser jogada uma vez por semana. A progressão respeita o teto potencial e a condição física.
+
 ## Aviso
 
-Sem afiliação com nenhuma liga, federação, clube ou jogador. Nomes são usados apenas para identificação e homenagem. A cronologia do jogo é uma camada histórica simplificada por ano.
+Sem afiliação com nenhuma liga, federação, clube ou jogador. Nomes são usados apenas para identificação e homenagem. A cronologia histórica é uma camada narrativa simplificada por ano.

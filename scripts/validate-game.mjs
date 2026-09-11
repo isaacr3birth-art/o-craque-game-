@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+const root=new URL('../',import.meta.url).pathname;
+const html=fs.readFileSync(root+'index.html','utf8');
+const js=fs.readFileSync(root+'game-v6.js','utf8');
+const d=JSON.parse(fs.readFileSync(root+'data/craques-mini.json','utf8'));
+const ids=[...html.matchAll(/id=[\"']([^\"']+)/g)].map(x=>x[1]);
+const dup=ids.filter((x,i)=>ids.indexOf(x)!==i);
+if(dup.length) throw new Error('IDs duplicados: '+[...new Set(dup)].join(','));
+for(const x of ['game-v6.js','styles-v6.css','startNationality','historyYear','generateOffers']) if(!html.includes(x)) throw new Error('item ausente: '+x);
+if(d.start!==1996||d.end!==2026||d.players.length<30) throw new Error('base historica invalida');
+for(const x of ["const KEY='craque-sss-v6'",'START=1996','MAX_TRAIN=3','localStorage','CUP_YEARS','injured','tempPenalty','callSelection','worldCup','generateOffers']) if(!js.includes(x)) throw new Error('regra ausente: '+x);
+console.log('OK: interface, motor, timeline e regras essenciais validos.');

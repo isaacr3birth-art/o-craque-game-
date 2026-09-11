@@ -3,10 +3,12 @@ import fs from 'node:fs';
 const root = new URL('../', import.meta.url).pathname;
 const html = fs.readFileSync(`${root}index.html`, 'utf8');
 const js = fs.readFileSync(`${root}game-v8.js`, 'utf8');
+const extra = fs.readFileSync(`${root}game-v8-extra.js`, 'utf8');
 const data = JSON.parse(fs.readFileSync(`${root}data/craques-mini.json`, 'utf8'));
 
 const assert = (ok, message) => { if (!ok) throw new Error(message); };
 assert(html.includes('game-v8.js'), 'index.html deve carregar game-v8.js');
+assert(html.includes('game-v8-extra.js'), 'index.html deve carregar game-v8-extra.js');
 assert(html.includes('styles-v8.css'), 'index.html deve carregar styles-v8.css');
 assert(html.includes('startNationality'), 'seletor de nacionalidade ausente');
 assert(html.includes('historyYear'), 'seletor histórico ausente');
@@ -27,22 +29,10 @@ for (const p of data.players) {
 }
 
 for (const needle of [
-  "const SAVE_KEY='craque-sss-v8'",
-  'START=1996',
-  'MAX_TRAIN=3',
-  'localStorage',
-  'cupCheck',
-  'injuredMatches',
-  'temporaryPhysicalPenalty',
-  'callSelection',
-  'generateOffers',
-  'startCareer',
-  'newGame',
-  'newGamePlus',
-  'setAgent',
-  'rivals',
-  'rest()',
-  'match(mode)'
+  "const SAVE_KEY='craque-sss-v8'", 'START=1996', 'MAX_TRAIN=3', 'localStorage',
+  'cupCheck', 'injuredMatches', 'temporaryPhysicalPenalty', 'callSelection',
+  'generateOffers', 'startCareer', 'newGame', 'newGamePlus', 'setAgent', 'rivals', 'rest()', 'match(mode)'
 ]) assert(js.includes(needle), `regra ausente: ${needle}`);
+for (const needle of ['game-v8-extra', 'playCup', 'challengeRival', 'sponsor', 'RANKING DAS SELEÇÕES']) assert(extra.includes(needle), `módulo extra ausente: ${needle}`);
 
 console.log(`OK: ${data.players.length} craques, ${data.players.reduce((n,p)=>n+p[4].length,0)} períodos de clubes, ${data.end-data.start+1} anos.`);
